@@ -1,11 +1,12 @@
+/*动态栈*/
 #include<stdio.h>
 #include<stdlib.h>
-#include<stdbool.h>
+#include <stdbool.h>
 typedef struct Node{
     int data;
     struct Node * pNext;
 }NODE, * PNODE;
-
+/*定义栈*/
 typedef struct Stack{
     PNODE pTop;//指向栈的顶部
     PNODE pBottom;//指向栈的底部
@@ -19,10 +20,10 @@ void clear(PSTACK);
 bool empty(PSTACK);
 
 int main(){
-    STACK S;
+    STACK S; //空间S有顶部和底部
     int val;
 
-    init(&S);//造一个空栈
+    init(&S);//清除垃圾值,造一个空栈
     push(&S, 89);//压栈
     push(&S, 7);
     push(&S, 3);
@@ -44,8 +45,8 @@ int main(){
 
     return 0;
 }
-
-void init(PSTACK pS){
+/*造出了一个空栈*/
+void init(PSTACK pS){//令顶和低都指向相当于头结点的地方
     pS->pTop = (PNODE)malloc(sizeof(NODE));
     if(NULL == pS->pTop){
         printf("动态内存分布失败!\n");
@@ -60,15 +61,15 @@ void init(PSTACK pS){
 void push(PSTACK pS, int val){
     PNODE pNew = (PNODE)malloc(sizeof(NODE));
     pNew->data = val;
-    pNew->pNext = pS->pTop;
-    pS->pTop = pNew;
+    pNew->pNext = pS->pTop; //定义指向下一个元素,因为pS->pTop一开始是指向初始化的空栈
+    pS->pTop = pNew;//令pTop指向新的结点
 
     return;
 }
 
 void traverse(PSTACK pS){
-    PNODE p = pS->pTop;
-    while(p != pS->pBottom){
+    PNODE p = pS->pTop;//定义指针p永远指向栈顶,所以会一直指向栈顶元素
+    while(p != pS->pBottom){//当指向栈底了就停止
             printf("%d ", p->data);
             p = p->pNext;
     }
@@ -92,7 +93,7 @@ bool pop(PSTACK pS, int * pVal){
         return false;
     }
     else{
-        PNODE r = pS->pTop;
+        PNODE r = pS->pTop; //出栈,就是从顶开始删除,定义一个r指向顶部
         *pVal = r->data;
         pS->pTop = r->pNext;
         free(r);
@@ -117,5 +118,3 @@ void clear(PSTACK pS){
         pS->pTop = pS->pBottom;
     }
 }
-
-
